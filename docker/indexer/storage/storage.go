@@ -44,6 +44,7 @@ type document struct {
 	BaseCPE      string    `datastore:"base_cpe"`
 	Version      string    `datastore:"version"`
 	Commit       []byte    `datastore:"commit"`
+	Tag          string    `datastore:"tag"`
 	When         time.Time `datastore:"when,omitempty"`
 	RepoType     string    `datastore:"repo_type"`
 	RepoAddr     string    `datastore:"repo_addr"`
@@ -58,11 +59,13 @@ type result struct {
 }
 
 func newDoc(repoInfo *preparation.Result, hashType string, fileResults []*processing.FileResult) (*document, []*result) {
+
 	doc := &document{
 		Name:         repoInfo.Name,
 		BaseCPE:      repoInfo.BaseCPE,
 		Version:      repoInfo.Version,
 		Commit:       repoInfo.Commit[:],
+		Tag:          repoInfo.CheckoutOptions.Branch.String(),
 		When:         repoInfo.When,
 		RepoType:     repoInfo.Type,
 		RepoAddr:     repoInfo.Addr,
